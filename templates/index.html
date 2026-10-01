@@ -14,6 +14,16 @@
         <h2>{{ post.title }}</h2>
         <p><em>Written by {{ post.author }}</em></p>
         <p>{{ post.content }}</p>
+
+        {#
+        Shoval, the assignment says it should be a button; a link would be easier.
+        <a href="{{ url_for('update', post_id=post.id) }}">Bearbeiten</a>
+        <a href="{{ url_for('delete', post_id=post.id) }}">Löschen</a>
+        #}
+
+        <form action="{{ url_for('update', post_id=post.id) }}" method="GET">
+            <button type="submit">Bearbeiten</button>
+        </form>
         <form action="{{ url_for('delete', post_id=post.id) }}" method="GET">
             <button type="submit">Löschen</button>
         </form>

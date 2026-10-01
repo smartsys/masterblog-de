@@ -4,6 +4,15 @@ from flask import Flask, redirect, render_template, request, url_for
 app = Flask(__name__)
 
 
+def fetch_post_by_id(post_id):
+    with open('blog_posts.json', 'r', encoding='utf-8') as file:
+        blog_posts = json.load(file)
+    for post in blog_posts:
+        if post['id'] == post_id:
+            return post
+    return None
+
+
 @app.route('/')
 def index():
     with open('blog_posts.json', 'r', encoding='utf-8') as file:
@@ -43,6 +52,30 @@ def delete(post_id):
         json.dump(blog_posts, file, indent=4)
 
     return redirect(url_for('index'))
+
+
+@app.route('/update/<int:post_id>', methods=['GET', 'POST'])
+def update(post_id):
+    post = fetch_post_by_id(post_id)
+    if post is None:
+        return "Post not found", 404
+
+    if request.method == 'POST':
+        with open('blog_posts.json', 'r', encoding='utf-8') as file:
+            blog_posts = json.load(file)
+
+        for blog_post in blog_posts:
+            if blog_post['id'] == post_id:
+                blog_post['author'] = request.form.get('author')
+                blog_post['title'] = request.form.get('title')
+                blog_post['content'] = request.form.get('content')
+
+        with open('blog_posts.json', 'w', encoding='utf-8') as file:
+            json.dump(blog_posts, file, indent=4)
+
+        return redirect(url_for('index'))
+
+    return render_template('update.html', post=post)
 
 
 if __name__ == '__main__':

@@ -3,12 +3,14 @@
         "id": 3,
         "author": "sadsd",
         "title": "asdsads",
-        "content": "adsadfdsfdsfdsf"
+        "content": "ssss",
+        "like": 2
     },
     {
         "id": 4,
         "author": "sasaS",
         "title": "asaas",
-        "content": "fdsf"
+        "content": "fdsf",
+        "like": 2
     }
 ]

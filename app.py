@@ -57,6 +57,7 @@ def delete(post_id):
 @app.route('/update/<int:post_id>', methods=['GET', 'POST'])
 def update(post_id):
     post = fetch_post_by_id(post_id)
+
     if post is None:
         return "Post not found", 404
 
@@ -69,6 +70,29 @@ def update(post_id):
                 blog_post['author'] = request.form.get('author')
                 blog_post['title'] = request.form.get('title')
                 blog_post['content'] = request.form.get('content')
+
+        with open('blog_posts.json', 'w', encoding='utf-8') as file:
+            json.dump(blog_posts, file, indent=4)
+
+        return redirect(url_for('index'))
+
+    return render_template('update.html', post=post)
+
+@app.route('/like/<int:post_id>', methods=['GET', 'POST'])
+def like(post_id):
+
+    post = fetch_post_by_id(post_id)
+
+    if post is None:
+        return "Post not found", 404
+
+    if request.method == 'POST':
+        with open('blog_posts.json', 'r', encoding='utf-8') as file:
+            blog_posts = json.load(file)
+
+        for blog_post in blog_posts:
+            if blog_post['id'] == post_id:
+                blog_post['like'] = blog_post['like'] + 1
 
         with open('blog_posts.json', 'w', encoding='utf-8') as file:
             json.dump(blog_posts, file, indent=4)

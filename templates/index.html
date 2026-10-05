@@ -7,27 +7,31 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to My Flask Blog!</h1>
-    <p><a href="{{ url_for('add') }}">Add a new post</a></p>
-    {% for post in posts %}
-    <div class="post">
-        <h2>{{ post.title }}</h2>
-        <p><em>Written by {{ post.author }}</em></p>
-        <p>{{ post.content }}</p>
+<h1>Welcome to My Flask Blog!</h1>
+<p><a href="{{ url_for('add') }}">Add a new post</a></p>
+{% for post in posts %}
+<div class="post">
+    <h2>{{ post.title }}</h2>
+    <p><em>Written by {{ post.author }}</em></p>
+    <p>{{ post.content }}</p>
 
-        {#
-        Shoval, the assignment says it should be a button; a link would be easier.
-        <a href="{{ url_for('update', post_id=post.id) }}">Bearbeiten</a>
-        <a href="{{ url_for('delete', post_id=post.id) }}">Löschen</a>
-        #}
+    {# Shoval, the assignment says it should be a button; a link would be easier. <a href="{{ url_for('update', post_id=post.id) }}">Bearbeiten</a> <a href="{{ url_for('delete', post_id=post.id) }}">Löschen</a> #}
+
+    <div class="post-actions">
 
         <form action="{{ url_for('update', post_id=post.id) }}" method="GET">
             <button type="submit">Bearbeiten</button>
         </form>
+
         <form action="{{ url_for('delete', post_id=post.id) }}" method="GET">
             <button type="submit">Löschen</button>
         </form>
+
+        <form action="{{ url_for('like', post_id=post.id) }}" method="POST">
+            <button type="submit">{{ post.like }} Like</button>
+        </form>
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
 </body>
 </html>
